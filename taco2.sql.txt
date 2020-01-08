@@ -1,0 +1,82 @@
+DROP TABLE IF EXISTS taco;
+CREATE TABLE taco (
+  ID INTEGER PRIMARY KEY,
+  shell VARCHAR(20),
+  meatID INTEGER,
+  price FLOAT
+);
+
+
+DROP TABLE IF EXISTS meat;
+CREATE TABLE meat(
+  ID INTEGER PRIMARY KEY,
+  name VARCHAR (20)
+);
+
+DROP TABLE IF EXISTS topping;
+CREATE TABLE topping(
+  ID INTEGER PRIMARY KEY,
+  name VARCHAR(20)
+);
+
+DROP TABLE IF EXISTS taco_topping;
+CREATE TABLE taco_topping(
+  ID INTEGER PRIMARY KEY,
+  tacoID integer,
+  toppingID integer
+);
+
+INSERT INTO taco_topping VALUES(null, 1, 1);
+INSERT INTO taco_topping VALUES(null, 1, 2);
+INSERT INTO taco_topping VALUES(null, 2, 3);
+INSERT INTO taco_topping VALUES(null, 3, 1);
+INSERT INTO taco_topping VALUES(null, 3, 3);
+
+
+INSERT INTO meat VALUES(null, 'chicken');
+INSERT INTO meat VALUES(null, 'beef');
+INSERT INTO meat VALUES(null, 'steak');
+INSERT INTO meat VALUES(null, 'shrimp');
+
+
+
+INSERT INTO topping VALUES(null, 'cheese');
+INSERT INTO topping VALUES(null, 'lettuce');
+INSERT INTO topping VALUES(null, 'sour cream');
+
+
+
+
+INSERT INTO taco VALUES(null, 'soft', 1, 1);
+INSERT INTO taco VALUES(null, 'hard', 2, 1);
+INSERT INTO taco VALUES(null, 'corn', 3, 3);
+
+
+
+DROP VIEW IF EXISTS tacoView;
+CREATE VIEW tacoView AS
+SELECT 
+  taco.ID AS 'ID',
+  shell AS 'shell',
+  meat.name AS 'meat',
+  price AS price
+FROM taco, meat
+WHERE
+  taco.meatID = meat.ID;
+
+SELECT * FROM tacoView;
+
+DROP view if exists toppingView;
+CREATE VIEW toppingView AS
+SELECT
+  taco.ID AS 'ID',
+  taco.shell AS 'Shell',
+  topping.name AS 'Topping'
+FROM
+   taco, topping, taco_topping
+WHERE 
+    taco.ID = taco_topping.tacoID
+AND
+	topping.ID = taco_topping.toppingID;
+
+SELECT * FROM toppingView;
